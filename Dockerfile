@@ -1,13 +1,15 @@
-# Utiliser une image Java officielle
-FROM openjdk:17-jdk-slim
+# ✅ Image compatible Render Free Tier (Java 17 + Debian)
+FROM eclipse-temurin:17-jdk-jammy
 
-# Télécharger la dernière version stable de Metabase
-RUN wget https://downloads.metabase.com/v0.50.4/metabase.jar -O /app/metabase.jar
-
-# Définir le répertoire de travail
+# Créer un dossier de travail
 WORKDIR /app
 
-# Exposer le port utilisé par Metabase
+# Télécharger la dernière version stable de Metabase
+RUN apt-get update && apt-get install -y wget && \
+    wget https://downloads.metabase.com/v0.50.4/metabase.jar -O metabase.jar && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Exposer le port par défaut de Metabase
 EXPOSE 3000
 
 # Démarrer Metabase
